@@ -6,6 +6,7 @@ public class ValidateCard {
 	   public static void main(String[] args) {
 	        String filename = "CardNums.txt";  
 	        validateCardNumbersFromFile(filename);
+	        int count=0;
 	    }
 	
     public static boolean works(String cardNumber) {
@@ -28,7 +29,10 @@ public class ValidateCard {
 
         return sum % 10 == 0;
     }
-	
+	if (isvalid)
+		{
+			count++;
+		}
     public static void validateCardNumbersFromFile(String filename) {
         try (Scanner scanner = new Scanner(new File("StudentList.txt"))) {
             while (scanner.hasNextLine()) {
