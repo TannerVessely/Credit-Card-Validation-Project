@@ -9,7 +9,7 @@ public class ValidateCard {
         int length = cardNumber.length();
 
         for (int i = 0; i < length; i++) {
-            int digit = Character.digit(cardNumber.charAt(i), 10);
+        	  int digit = 0 ;
 
             if (i % 2 == 0) {
                 digit *= 2;
@@ -24,27 +24,26 @@ public class ValidateCard {
 
         return sum % 10 == 0;
     }
-
+	
     public static void validateCardNumbersFromFile(String filename) {
-        try (Scanner scanner = new Scanner(new File(filename))) {
+        try (Scanner scanner = new Scanner(new File("StudentList.txt"))) {
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine().trim();
+                String line = scanner.nextLine();
                 if (!line.isEmpty()) {
                     boolean isValid = works(line);
                     if (isValid) {
-                        System.out.println(line + " is VALID.");
+                        System.out.println(line + " is right");
                     } else {
-                        System.out.println(line + " is INVALID.");
+                        System.out.println(line + " is not right");
                     }
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
+            System.out.println("Error reading  " + e.getMessage());
         }
     }
 
     public static void main(String[] args) {
-        // Specify the text file name that contains the card numbers
         String filename = "CardNums.txt";  
         validateCardNumbersFromFile(filename);
     }
