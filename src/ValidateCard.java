@@ -3,7 +3,11 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ValidateCard {
-
+	   public static void main(String[] args) {
+	        String filename = "CardNums.txt";  
+	        validateCardNumbersFromFile(filename);
+	    }
+	
     public static boolean works(String cardNumber) {
         int sum = 0;
         int length = cardNumber.length();
@@ -42,9 +46,5 @@ public class ValidateCard {
             System.out.println("Error reading  " + e.getMessage());
         }
     }
-
-    public static void main(String[] args) {
-        String filename = "CardNums.txt";  
-        validateCardNumbersFromFile(filename);
-    }
+}
 }
