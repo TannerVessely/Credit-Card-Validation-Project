@@ -1,54 +1,85 @@
+import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class ValidateCard {
-	   public static void main(String[] args) {
-	        String filename = "CardNums.txt";  
-	        validateCardNumbersFromFile(filename);
-	        int count=0;
-	    }
-	
-    public static boolean works(String cardNumber) {
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nCard Validator");
+            System.out.println("1. Check cards from file");
+            System.out.println("2. Check one card");
+            System.out.print("Choose 1 or 2: ");
+
+            int choice = input.nextInt();
+            input.nextLine(); 
+
+            if (choice == 1) {
+                checkCardsFromFile();
+            } else if (choice == 2) {
+                checkOneCard();
+            } else {
+                System.out.println("Not a correct choice. Try again.");
+            }
+        }
+    }
+
+    // Luhn
+    public static boolean isCorrect(String number) {
         int sum = 0;
-        int length = cardNumber.length();
+        boolean doubleDigit = false;
 
-        for (int i = 0; i < length; i++) {
-        	  int digit = 0 ;
+        for (int i = number.length() - 1; i >= 0; i--) {
+            int digit = Character.getNumericValue(number.charAt(i));
 
-            if (i % 2 == 0) {
+            if (doubleDigit) {
                 digit *= 2;
-
-                if (digit > 9) {
-                    digit -= 9;
-                }
+                if (digit > 9) digit -= 9;
             }
 
             sum += digit;
+            doubleDigit = !doubleDigit;
         }
 
         return sum % 10 == 0;
     }
-	if (isvalid)
-		{
-			count++;
-		}
-    public static void validateCardNumbersFromFile(String filename) {
-        try (Scanner scanner = new Scanner(new File("StudentList.txt"))) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (!line.isEmpty()) {
-                    boolean isValid = works(line);
-                    if (isValid) {
-                        System.out.println(line + " is right");
-                    } else {
-                        System.out.println(line + " is not right");
-                    }
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error reading  " + e.getMessage());
+
+    // check input
+    public static void checkOneCard() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter card number: ");
+        String number = input.nextLine();
+
+        if (isCorrect(number)) {
+            System.out.println("Card is correct.");
+        } else {
+            System.out.println("Card is incorrect.");
         }
     }
-}
+
+    // Check cards from a file 
+    public static void checkCardsFromFile() {
+        try {
+            File file = new File("src/CardNums.txt");
+            Scanner fileInput = new Scanner(file);
+            int correctCount = 0;
+
+            while (fileInput.hasNextLine()) {
+                String number = fileInput.nextLine().trim();
+                if (isCorrect(number)) {
+                    System.out.println(number + " is correct.");
+                    correctCount++;
+                } else {
+                    System.out.println(number + " is incorrect.");
+                }
+            }
+
+            System.out.println("Total correct cards: " + correctCount);
+            fileInput.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find the file.");
+        }
+    }
 }
